@@ -58,7 +58,7 @@ outgoing:
 
 ## 安装(Windows DSH profile)
 
-1. 编辑 profile 的 `package.json`(例如 `%USERPROFILE%\.dsh\profiles\desktop\package.json`),在 `dependencies` 加入:
+1. 编辑 profile 的 `package.json`(例如 `%USERPROFILE%\.dsh\profiles\desktop\package.json`),在 `dependencies` 加入(把 `<用户名>` 换成你的 GitHub 用户名):
 
    ```json
    {
