@@ -26,6 +26,36 @@ search:
     - json
 ```
 
+## 上游引擎与代理(可选)
+
+SearXNG 的每个引擎可单独配置代理(`proxies`,按 http/https 分列)。国内引擎直连、国际引擎走代理是典型用法:
+
+```yaml
+engines:
+  # 直连(默认禁用,显式启用)
+  - name: bing
+    disabled: false
+  - name: baidu
+    disabled: false
+
+  # 国际引擎:走代理
+  - name: wikipedia
+    disabled: false
+    proxies:
+      http: [ "http://192.168.3.251:8888" ]
+      https: [ "http://192.168.3.251:8888" ]
+```
+
+走代理的请求延迟更高,建议在 `outgoing` 段放宽超时:
+
+```yaml
+outgoing:
+  max_request_timeout: 10.0
+  extra_proxy_timeout: 5
+```
+
+注意:上游引擎(baidu/quark 的验证码、wikipedia/brave 的 429)会在高频请求后临时挂起 3~60 分钟,属正常自我保护,无需干预。
+
 ## 安装(Windows DSH profile)
 
 1. 编辑 profile 的 `package.json`(例如 `%USERPROFILE%\.dsh\profiles\desktop\package.json`),在 `dependencies` 加入:
