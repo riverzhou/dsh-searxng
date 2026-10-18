@@ -1,7 +1,7 @@
 {
   "name": "dsh-searxng",
-  "description": "Local SearXNG search provider for the DeepSeek Harness web capability seam (ctx.web)",
-  "version": "0.1.0",
+  "description": "Session-aware search provider for the DeepSeek Harness web capability seam (ctx.web): local-model sessions use a self-hosted SearXNG instance, cloud-model sessions use DeepSeek search",
+  "version": "0.2.0",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
@@ -10,18 +10,38 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
+    "lib/client.js",
     "lib/types/**/*.d.ts",
+    "locale/*.json",
+    "src/client.jsx",
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "build": "node scripts/build-client.mjs"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/riverzhou/dsh-searxng.git"
+  },
+  "dsh": {
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
+      ],
+      "platform": "web"
+    }
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "~4.0.5",
@@ -33,5 +53,8 @@
   },
   "dependencies": {
     "@deepseek-ai/schemastery": "~3.18.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
   }
 }

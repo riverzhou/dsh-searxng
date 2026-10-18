@@ -117,6 +117,18 @@ outgoing:
 - `DSH_SEARXNG_BASE_URL` — 覆盖 `baseURL` 的默认值(config 中显式设置时以 config 为准)
 - `DEEPSEEK_SEARCH_BASE_URL` — 覆盖云端搜索端点(默认 `https://api.deepseek.com/anthropic/v1`)
 
+## GUI 设置页
+
+包自带 DSH GUI 的设置页(client 半区,随包自动发现,无需额外配置):
+
+- 位置:**插件 → 内置插件设置 → SearXNG 搜索**(仅当插件已加载时显示)
+- 字段:
+  - **SearXNG 基础地址**(`baseURL`)— 本地分支查询的实例地址,留空恢复默认
+  - **本地模型会话的提供方**(`localProviders`)— 逗号分隔的 provider id 名单,留空恢复默认(`omlx`)
+- 保存即热生效:provider 每次搜索时读取最新配置,无需重启 DSH
+
+注意:设置页依赖 Loader 行是**包引用**(`name: "dsh-searxng"`)。若行指向本地裸文件(如 `./plugins/.../index.mjs`),DSH 发现不到包的 `dsh.client` 声明,设置页不会出现(搜索功能本身不受影响)。
+
 ## 注意事项
 
 - 不要在 DSH 的「插件 → 内置插件设置 → 网页搜索」页面里切换「启用新版 Web 搜索 API」开关,那会把 `searchProvider` 改回 DeepSeek,覆盖本插件的选择。

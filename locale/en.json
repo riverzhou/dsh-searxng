@@ -1,0 +1,15 @@
+{
+  "title": "SearXNG search",
+  "description": "Route web_search to the local SearXNG instance for local-model sessions.",
+  "baseURL": "SearXNG base URL",
+  "baseURLHint": "The SearXNG instance the local branch queries, for example http://192.0.0.1:8888. Leave blank to restore the default.",
+  "localProviders": "Local-model session providers",
+  "localProvidersHint": "Comma-separated LLM provider ids whose sessions search through SearXNG, for example omlx. Other sessions use DeepSeek search. Leave blank to restore the default.",
+  "overridden": "Overridden",
+  "reset": "Reset to default",
+  "readOnly": "This deployment stores settings read-only.",
+  "unavailable": "This plugin is not loaded, so it cannot be configured right now.",
+  "save": "Save",
+  "saving": "Saving…",
+  "saveFailed": "The deployment did not accept these values; they were left for you to correct."
+}

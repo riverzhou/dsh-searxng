@@ -1,0 +1,15 @@
+{
+  "title": "SearXNG 搜索",
+  "description": "本地模型会话的 web_search 走自建 SearXNG 实例。",
+  "baseURL": "SearXNG 基础地址",
+  "baseURLHint": "本地分支查询的 SearXNG 实例地址,例如 http://192.0.0.1:8888;留空恢复默认。",
+  "localProviders": "本地模型会话的提供方",
+  "localProvidersHint": "逗号分隔的 LLM 提供方 id,名单内会话走 SearXNG,其余会话走 DeepSeek 搜索,例如 omlx;留空恢复默认。",
+  "overridden": "已覆盖",
+  "reset": "恢复默认",
+  "readOnly": "本部署的设置为只读。",
+  "unavailable": "该插件当前未加载,暂时无法配置。",
+  "save": "保存",
+  "saving": "保存中…",
+  "saveFailed": "本部署没有接受这些值,已保留供你修改。"
+}
