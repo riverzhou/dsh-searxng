@@ -59,12 +59,15 @@ function formLabels(t) {
 /**
  * A text field over a string-array setting: comma-separated names on the way
  * in, a clean array on the way out. Blank text clears the override so the
- * schema default applies again.
+ * schema default applies again. `format` joins the stored array back to text,
+ * so the field shows the effective value (default included) like a plain
+ * string field does.
  */
 function localProvidersField(name) {
   const base = settingsTextField(name);
   return {
     ...base,
+    format: (value) => (Array.isArray(value) ? value.join(", ") : ""),
     parse: (text) => {
       const trimmed = text.trim();
       if (trimmed === "") return { kind: "clear" };
