@@ -70,6 +70,8 @@ outgoing:
 
 ## 安装(Windows DSH profile)
 
+> 要求 DSH `>=0.2.1-0`(0.2.1 及以上,含 nightly 的 0.2.1-rc.x;见 `package.json` 的 `engines.dsh`);更早的版本缺少本插件依赖的设置页/设置表单 API。
+
 1. 编辑 profile 的 `package.json`(例如 `%USERPROFILE%\.dsh\profiles\desktop\package.json`),在 `dependencies` 加入(把 `<用户名>` 换成你的 GitHub 用户名):
 
     ```json

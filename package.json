@@ -1,7 +1,7 @@
 {
   "name": "dsh-searxng",
   "description": "Session-aware search provider for the DeepSeek Harness web capability seam (ctx.web): local-model sessions use a self-hosted SearXNG instance, cloud-model sessions use DeepSeek search",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
@@ -42,6 +42,9 @@
       ],
       "platform": "web"
     }
+  },
+  "engines": {
+    "dsh": ">=0.2.1-0"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "~4.0.5",
