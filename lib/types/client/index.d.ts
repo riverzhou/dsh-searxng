@@ -1,5 +1,5 @@
 /**
- * Type declarations for the dsh-searxng browser half (loose on purpose; the
+ * Type declarations for the @riverzhou/dsh-searxng browser half (loose on purpose; the
  * runtime bundle is the source of truth).
  */
 /** Dictionary namespace owned by this page. */

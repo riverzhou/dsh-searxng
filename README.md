@@ -1,4 +1,4 @@
-# dsh-searxng
+# @riverzhou/dsh-searxng
 
 DeepSeek Harness 插件:让 `web_search` 工具**按会话所用的模型自动选择搜索后端**——用本地模型(如 oMLX)时走**自建 SearXNG**,用云端模型(如 DeepSeek)时走 **DeepSeek 云端搜索**。
 
@@ -77,12 +77,12 @@ outgoing:
     ```json
     {
       "dependencies": {
-        "dsh-searxng": "git+https://github.com/<用户名>/dsh-searxng.git#main"
+        "@riverzhou/dsh-searxng": "git+https://github.com/riverzhou/dsh-searxng.git#main"
       }
     }
     ```
 
-    (本地安装也可以把 `#` 后的 `git+https://...` 换成相对路径,如 `../dsh-searxng`)
+    (本地安装也可以把 `#` 后的 `git+https://...` 换成绝对/相对路径,如 `D:/GitHub/dsh-searxng`)
 
 2. 在 profile 目录执行 `pnpm install`(DSH profile 自带 `pnpm-workspace.yaml`)。
 
@@ -93,7 +93,7 @@ outgoing:
     # 注意:patch 是整行替换 config,`web` 行必须把 searchProvider/fetchProvider 都重述。
     - insert:
         - id: web-search-searxng
-          name: "dsh-searxng"
+          name: "@riverzhou/dsh-searxng"
           config:
             baseURL: http://192.168.3.198:8888   # SearXNG 所在机器的局域网地址
             # localProviders: [omlx]            # 可选:哪些会话 provider 算"本地"
@@ -129,7 +129,7 @@ outgoing:
   - **本地模型会话的提供方**(`localProviders`)— 逗号分隔的 provider id 名单,留空恢复默认(`omlx`)
 - 保存即热生效:provider 每次搜索时读取最新配置,无需重启 DSH
 
-注意:设置页依赖 Loader 行是**包引用**(`name: "dsh-searxng"`)。若行指向本地裸文件(如 `./plugins/.../index.mjs`),DSH 发现不到包的 `dsh.client` 声明,设置页不会出现(搜索功能本身不受影响)。
+注意:设置页依赖 Loader 行是**包引用**(`name: "@riverzhou/dsh-searxng"`)。若行指向本地裸文件(如 `./plugins/.../index.mjs`),DSH 发现不到包的 `dsh.client` 声明,设置页不会出现(搜索功能本身不受影响)。
 
 ## 注意事项
 

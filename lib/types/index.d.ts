@@ -1,5 +1,5 @@
 /**
- * Type declarations for dsh-searxng (loose on purpose; the runtime module is
+ * Type declarations for @riverzhou/dsh-searxng (loose on purpose; the runtime module is
  * the source of truth).
  */
 /** Cordis plugin name used by loader diagnostics. */
