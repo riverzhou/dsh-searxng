@@ -4,6 +4,8 @@ DeepSeek Harness 插件:让 `web_search` 工具**按会话所用的模型自动�
 
 A DSH plugin that registers a session-aware search provider on the `ctx.web` seam. Each query is routed by the current session's LLM provider: local models (default `omlx`) use a self-hosted [SearXNG](https://github.com/searxng/searxng) instance (JSON API); any other (cloud) model uses DeepSeek search (Messages API + `web_search_20250305` server tool, same credentials channel as the bundled `deepseek-official` provider).
 
+For DSH `>=0.2.2` the provider also reports a picker `title`/`description`, a structural `available()`, and a `ready(llmProvider)` hook: the built-in **Web search and fetch** settings page lists it through `web/listProviders`, and a model step withholds `web_search` when the route's search would have no credential (for example a cloud session without a DeepSeek account or API key) instead of failing on dispatch.
+
 ```
 DSH web_search ─▶ ctx.web (searchProvider: searxng)
                   ─▶ dsh-searxng provider(按会话模型路由)
@@ -32,11 +34,11 @@ search:
 
 云端会话(非本地 provider)的 DeepSeek 搜索按以下顺序解析凭据:
 
-1. 会话为 DeepSeek Account 登录时 → 账号 token(`x-dsh-auth-token`)
-2. 凭据服务中的 `DEEPSEEK_API_KEY`
-3. 启动环境中的 `DEEPSEEK_API_KEY`
+1. 会话为 DeepSeek Account 登录时 → 账号 token(`x-dsh-auth-token`);HTTP 401 时自动让该 token 失效(与官方 provider 一致)
+2. 凭据服务中的 `DEEPSEEK_API_KEY`(`credentials.resolve`)
+3. 启动环境快照 / 进程环境中的 `DEEPSEEK_API_KEY`
 
-本地会话(omlx)不经过云端,无需任何 key。
+本地会话(omlx)不经过云端,无需任何 key。`ready()` 的判定与上面同序、只检查配置不发请求。
 
 ## 上游引擎与代理(可选)
 
@@ -70,7 +72,7 @@ outgoing:
 
 ## 安装(Windows DSH profile)
 
-> 要求 DSH `>=0.2.1-0`(0.2.1 及以上,含 nightly 的 0.2.1-rc.x;见 `package.json` 的 `engines.dsh`);更早的版本缺少本插件依赖的设置页/设置表单 API。
+> 要求 DSH `>=0.2.2-0`(0.2.2 及以上,含 nightly 的 0.2.2-rc.x;见 `package.json` 的 `engines.dsh`)。0.2.2 起 provider 的 `title`/`description`/`ready` 与官方「网页搜索与获取」选择器才可用。
 
 1. 编辑 profile 的 `package.json`(例如 `%USERPROFILE%\.dsh\profiles\desktop\package.json`),在 `dependencies` 加入(把 `<用户名>` 换成你的 GitHub 用户名):
 
@@ -114,26 +116,28 @@ outgoing:
 | `baseURL` | `http://127.0.0.1:8888` | SearXNG 实例地址(本地分支),不需要尾部 `/` |
 | `localProviders` | `["omlx"]` | 会话 LLM provider 名单:名单内 → SearXNG;名单外(云端)→ DeepSeek 搜索。显式设 `[]` 表示没有本地 provider |
 
-环境变量:
+环境变量(先读启动器快照 `ctx.get("launchEnvironment")`,再回退到进程环境):
 
 - `DSH_SEARXNG_BASE_URL` — 覆盖 `baseURL` 的默认值(config 中显式设置时以 config 为准)
 - `DEEPSEEK_SEARCH_BASE_URL` — 覆盖云端搜索端点(默认 `https://api.deepseek.com/anthropic/v1`)
 
 ## GUI 设置页
 
-包自带 DSH GUI 的设置页(client 半区,随包自动发现,无需额外配置):
+DSH 0.2.2 起有两处设置入口:
 
-- 位置:**插件 → 内置插件设置 → SearXNG 搜索**(仅当插件已加载时显示)
-- 字段:
-  - **SearXNG 基础地址**(`baseURL`)— 本地分支查询的实例地址,留空恢复默认
-  - **本地模型会话的提供方**(`localProviders`)— 逗号分隔的 provider id 名单,留空恢复默认(`omlx`)
-- 保存即热生效:provider 每次搜索时读取最新配置,无需重启 DSH
+1. **官方「网页搜索与获取」页**(插件 → 内置插件设置 → 网页搜索与获取):搜索提供方下拉里会列出 **SearXNG (by model)**(id `searxng`),选中即把 `web.searchProvider` 指到本插件,无需再手写 `web` 行;选中时还会显示本插件的说明(本地会话走 SearXNG,其余会话走 DeepSeek)。
+2. **插件自带页**(插件 → 内置插件设置 → SearXNG 搜索):
+   - **SearXNG 基础地址**(`baseURL`)— 本地分支查询的实例地址,留空恢复默认
+   - **本地模型会话的提供方**(`localProviders`)— 逗号分隔的 provider id 名单,留空恢复默认(`omlx`)
+
+保存即热生效:provider 每次搜索时读取最新配置,无需重启 DSH。
 
 注意:设置页依赖 Loader 行是**包引用**(`name: "@riverzhou/dsh-searxng"`)。若行指向本地裸文件(如 `./plugins/.../index.mjs`),DSH 发现不到包的 `dsh.client` 声明,设置页不会出现(搜索功能本身不受影响)。
 
 ## 注意事项
 
-- 不要在 DSH 的「插件 → 内置插件设置 → 网页搜索」页面里切换「启用新版 Web 搜索 API」开关,那会把 `searchProvider` 改回 DeepSeek,覆盖本插件的选择。
+- 云端分支实现的是**旧版 Messages 搜索**(与官方 `deepseek-official` 相同);0.2.2 新增的 DeepSeek Search API(`deepseek-search-api`)是独立 provider,本插件不经过它。若想用新 API,可在「网页搜索与获取」页直接选它,本插件就不再参与。
+- `ready()` 只做配置检查、不发网络请求:云端会话缺账号/Key 时 `web_search` 不会出现在该步的工具列表里;本地会话只要有合法的 SearXNG 地址就算就绪。
 - 云端分支与官方 `deepseek-official` provider 共存:pin 固定到 `searxng` 时,每次搜索由本插件按会话模型内部路由,不会出现"多个可用 provider"的歧义错误。
 - SearXNG 上游引擎的可用性取决于网络;走代理的国际引擎在代理不可用时只会单独失败,不影响直连引擎。
 

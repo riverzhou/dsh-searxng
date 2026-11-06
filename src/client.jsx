@@ -14,9 +14,9 @@ import { createSnapshotStore } from "@deepseek-ai/dsh-client-store";
 /** English copy. */
 const en = {
   title: "SearXNG search",
-  description: "Route web_search to the local SearXNG instance for local-model sessions.",
+  description: "Session-aware web search: local-model sessions use your SearXNG instance, every other session uses DeepSeek. Pick it as the search provider under Web search and fetch.",
   baseURL: "SearXNG base URL",
-  baseURLHint: "The SearXNG instance the local branch queries, for example http://192.0.0.1:8888. Leave blank to restore the default.",
+  baseURLHint: "The SearXNG instance the local-model branch queries, for example http://192.0.0.1:8888. Leave blank to restore the default.",
   localProviders: "Local-model session providers",
   localProvidersHint: "Comma-separated LLM provider ids whose sessions search through SearXNG, for example omlx. Other sessions use DeepSeek search. Leave blank to restore the default.",
   overridden: "Overridden",
@@ -31,7 +31,7 @@ const en = {
 /** Simplified Chinese copy. */
 const zh = {
   title: "SearXNG 搜索",
-  description: "本地模型会话的 web_search 走自建 SearXNG 实例。",
+  description: "按会话模型路由的网页搜索:本地模型会话走自建 SearXNG,其余会话走 DeepSeek;在「网页搜索与获取」里把搜索提供方选为 searxng。",
   baseURL: "SearXNG 基础地址",
   baseURLHint: "本地分支查询的 SearXNG 实例地址,例如 http://192.0.0.1:8888;留空恢复默认。",
   localProviders: "本地模型会话的提供方",

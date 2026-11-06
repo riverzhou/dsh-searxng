@@ -1,6 +1,6 @@
 {
   "title": "SearXNG 搜索",
-  "description": "本地模型会话的 web_search 走自建 SearXNG 实例。",
+  "description": "按会话模型路由的网页搜索:本地模型会话走自建 SearXNG,其余会话走 DeepSeek;在「网页搜索与获取」里把搜索提供方选为 searxng。",
   "baseURL": "SearXNG 基础地址",
   "baseURLHint": "本地分支查询的 SearXNG 实例地址,例如 http://192.0.0.1:8888;留空恢复默认。",
   "localProviders": "本地模型会话的提供方",

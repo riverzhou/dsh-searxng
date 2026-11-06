@@ -1,6 +1,6 @@
 {
   "title": "SearXNG search",
-  "description": "Route web_search to the local SearXNG instance for local-model sessions.",
+  "description": "Session-aware web search: local-model sessions use your SearXNG instance, every other session uses DeepSeek. Pick it as the search provider under Web search and fetch.",
   "baseURL": "SearXNG base URL",
   "baseURLHint": "The SearXNG instance the local branch queries, for example http://192.0.0.1:8888. Leave blank to restore the default.",
   "localProviders": "Local-model session providers",
